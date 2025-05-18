@@ -16,7 +16,7 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         if (!$request->user()->tokenCan('category:list'))
-            abort(403);
+            abort(401, 'Unauthorized');
 
         return Category::paginate();
 
@@ -36,7 +36,7 @@ class CategoryController extends Controller
     public function show(Category $category, Request $request): Category
     {
         if (!$request->user()->tokenCan('category:read'))
-            abort(403);
+            abort(401, 'Unauthorized');
 
         return $category;
     }
@@ -57,7 +57,7 @@ class CategoryController extends Controller
     public function destroy(Category $category, Request $request): JsonResponse
     {
         if (!$request->user()->tokenCan('category:delete'))
-            abort(403);
+            abort(401, 'Unauthorized');
 
         $category->delete();
         return response()->json(null, 204);
