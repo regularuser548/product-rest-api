@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 
@@ -12,7 +13,7 @@ class StoreProductRequest extends FormRequest
      */
     public function authorize(Request $request): bool
     {
-        return $request->user()->tokenCan('product:create');
+        return $request->user()->can('create', Product::class);
     }
 
     /**

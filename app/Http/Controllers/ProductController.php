@@ -5,18 +5,17 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        if (!$request->user()->tokenCan('product:list'))
-            abort(401, 'Unauthorized');
+        Gate::authorize('viewAny', Product::class);
 
         return Product::paginate();
     }
@@ -24,18 +23,17 @@ class ProductController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreProductRequest $request)
-    {
-        return Product::create($request->validated());
-    }
+//    public function store(StoreProductRequest $request)
+//    {
+//        return Product::create($request->validated());
+//    }
 
     /**
      * Display the specified resource.
      */
-    public function show(Request $request, Product $product): Product
+    public function show(Product $product): Product
     {
-        if (!$request->user()->tokenCan('product:read'))
-            abort(401, 'Unauthorized');
+        Gate::authorize('view', $product);
 
         return $product;
     }
@@ -52,12 +50,11 @@ class ProductController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Product $product, Request $request): JsonResponse
+    public function destroy(Product $product): Response
     {
-        if (!$request->user()->tokenCan('product:delete'))
-            abort(401, 'Unauthorized');
+        Gate::authorize('delete', $product);
 
         $product->delete();
-        return response()->json(null, 204);
+        return response()->noContent();
     }
 }

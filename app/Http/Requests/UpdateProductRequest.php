@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Product;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 
@@ -10,9 +11,9 @@ class UpdateProductRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(Request $request): bool
+    public function authorize(Request $request, Product $product): bool
     {
-        return $request->user()->tokenCan('product:update');
+        return $request->user()->can('update', $product);
     }
 
     /**

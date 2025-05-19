@@ -5,21 +5,19 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
+use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Gate;
 
 class CategoryController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index()
     {
-        if (!$request->user()->tokenCan('category:list'))
-            abort(401, 'Unauthorized');
+        Gate::authorize('viewAny', Category::class);
 
         return Category::paginate();
-
     }
 
     /**
@@ -33,10 +31,9 @@ class CategoryController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Category $category, Request $request): Category
+    public function show(Category $category): Category
     {
-        if (!$request->user()->tokenCan('category:read'))
-            abort(401, 'Unauthorized');
+        Gate::authorize('view', Category::class);
 
         return $category;
     }
@@ -48,18 +45,16 @@ class CategoryController extends Controller
     {
         $category->update($request->validated());
         return $category;
-
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Category $category, Request $request): JsonResponse
+    public function destroy(Category $category): Response
     {
-        if (!$request->user()->tokenCan('category:delete'))
-            abort(401, 'Unauthorized');
+        Gate::authorize('delete', $category);
 
         $category->delete();
-        return response()->json(null, 204);
+        return response()->noContent();
     }
 }

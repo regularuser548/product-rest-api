@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 
-
+use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 
@@ -15,7 +15,7 @@ class StoreCategoryRequest extends FormRequest
      */
     public function authorize(Request $request): bool
     {
-        return $request->user()->tokenCan('category:create');
+        return $request->user()->can('create', Category::class);
     }
 
     /**

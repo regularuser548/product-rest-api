@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\Category;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 
@@ -10,9 +11,9 @@ class UpdateCategoryRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(Request $request): bool
+    public function authorize(Request $request, Category $category): bool
     {
-        return $request->user()->tokenCan('category:update');
+        return $request->user()->can('update', $category);
     }
 
     /**
@@ -23,7 +24,7 @@ class UpdateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|min:3|max:255'
+            'name' => 'sometimes|string|min:3|max:255'
         ];
     }
 }
