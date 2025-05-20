@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\ProductFilters;
 use App\Http\Requests\StoreProductRequest;
 use App\Models\Category;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Gate;
 
@@ -12,11 +14,15 @@ class CategoryProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Category $category): LengthAwarePaginator
+    public function index(Category $category, Request $request): LengthAwarePaginator
     {
         Gate::authorize('viewAny', $category);
 
-        return $category->products()->paginate();
+        $filters = new ProductFilters($request);
+        $query = $filters->apply($category->products()->getQuery());
+
+        return $query->paginate($request->integer('per_page', 15));
+
     }
 
     /**

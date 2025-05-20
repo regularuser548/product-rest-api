@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Filters\ProductFilters;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Gate;
 
 class ProductController extends Controller
@@ -12,11 +15,14 @@ class ProductController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request): LengthAwarePaginator
     {
         Gate::authorize('viewAny', Product::class);
 
-        return Product::paginate();
+        $filters = new ProductFilters($request);
+        $query = $filters->apply(Product::query());
+
+        return $query->paginate($request->integer('per_page', 15));
     }
 
     /**
