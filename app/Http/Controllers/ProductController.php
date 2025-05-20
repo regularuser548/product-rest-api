@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreProductRequest;
 use App\Http\Requests\UpdateProductRequest;
 use App\Models\Product;
 use Illuminate\Http\Response;
@@ -19,14 +18,6 @@ class ProductController extends Controller
 
         return Product::paginate();
     }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-//    public function store(StoreProductRequest $request)
-//    {
-//        return Product::create($request->validated());
-//    }
 
     /**
      * Display the specified resource.
