@@ -11,9 +11,9 @@ class UpdateProductRequest extends FormRequest
     /**
      * Determine if the user is authorized to make this request.
      */
-    public function authorize(Request $request, Product $product): bool
+    public function authorize(Request $request): bool
     {
-        return $request->user()->can('update', $product);
+        return $request->user()->can('update', $this->product);
     }
 
     /**

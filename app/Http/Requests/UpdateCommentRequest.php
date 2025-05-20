@@ -2,18 +2,18 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Category;
+use App\Models\Comment;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
 
-class UpdateCategoryRequest extends FormRequest
+class UpdateCommentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
      */
     public function authorize(Request $request): bool
     {
-        return $request->user()->can('update', $this->category);
+        return $request->user()->can('update', $this->comment);
     }
 
     /**
@@ -24,7 +24,7 @@ class UpdateCategoryRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'sometimes|string|min:3|max:255'
+            'text' => 'sometimes|string|min:3|max:255'
         ];
     }
 }

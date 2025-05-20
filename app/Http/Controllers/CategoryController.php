@@ -33,7 +33,7 @@ class CategoryController extends Controller
      */
     public function show(Category $category): Category
     {
-        Gate::authorize('view', Category::class);
+        Gate::authorize('view', $category);
 
         return $category;
     }
