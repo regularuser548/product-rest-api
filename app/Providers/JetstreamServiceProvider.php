@@ -49,7 +49,6 @@ class JetstreamServiceProvider extends ServiceProvider
             'product:update',
             'product:delete',
             'product:list',
-            'product:buy',
 
             'category:create',
             'category:read',

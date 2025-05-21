@@ -73,4 +73,12 @@ class User extends Authenticatable
     {
         return $this->hasMany(Comment::class);
     }
+
+    /**
+     * Get all purchases for this user.
+     */
+    public function purchases(): HasMany
+    {
+        return $this->hasMany(PurchaseRecord::class);
+    }
 }
