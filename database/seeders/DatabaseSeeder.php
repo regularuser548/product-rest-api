@@ -23,8 +23,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Category::factory(5)
-            ->has(Product::factory(20)
-                ->has(Comment::factory(30)))->create();
+            ->has(Product::factory(20))->create();
 
 
     }
